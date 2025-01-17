@@ -1,10 +1,12 @@
 name: Lighthouse CI
 
 on:
+  # ① プルリクエストが作成/更新されたとき
   pull_request:
     branches: [ "main" ]
+  # ② 毎日深夜1時に自動実行（cron形式：UTC基準）
   schedule:
-    - cron: "0 16 * * *"  # 毎日1時(JST)に定期実行
+    - cron: "0 16 * * *"  # UTCで16時 → JSTで1時
 
 jobs:
   lighthouse:
@@ -21,17 +23,25 @@ jobs:
       - name: Install Lighthouse CI
         run: npm install -g @lhci/cli
 
+      # 必要に応じて build 実行 (静的サイトならビルドして ./dist を生成 など)
+      # - name: Build Project
+      #   run: npm run build
+
       - name: Run Lighthouse CI
         id: lhci
         run: |
+          # LHCI 実行コマンド
           lhci autorun \
             --config=./lighthouserc.json \
             --upload.target=temporary-public-storage
+  
+      - name: Check Lighthouse results
+        if: failure() # Lighthouse スコアが閾値を下回ると 'failure()' となる
+        run: echo "Lighthouse check failed."
 
-      # ★ここがSlack連携部分★
-      - name: Notify Slack on failure
-        if: failure()  # Lighthouse CIでエラー（閾値未達）がある場合のみ実行
+      - name: Notify Slack
+        if: failure()
         run: |
           curl -X POST -H 'Content-type: application/json' --data '{
-            "text": ":warning: Lighthouse CIでパフォーマンススコアが閾値未満のページが検出されました。詳細ログはActions画面を確認してください。"
+            "text": "Lighthouse CI: パフォーマンススコアが閾値を下回りました。詳細はこちら: https://github.com/ORG/REPO/actions"
           }' ${{ secrets.SLACK_WEBHOOK_URL }}
