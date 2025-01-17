@@ -15,7 +15,7 @@
         "categories:accessibility": ["warn", { "minScore": 0.90 }],
         "categories:best-practices": ["warn", { "minScore": 0.80 }],
         
-        // "largest-contentful-paint": ["error", { "maxNumericValue": 2500 }], // ミリ秒表記
+        // "largest-contentful-paint": ["error", { "maxNumericValue": 2500 }], 
       }
     }
   }
