@@ -1,11 +1,9 @@
 {
   "ci": {
     "collect": {
-      // GitHub Actions 上で直接URLを指定して計測するため、staticDistDir などは不要
       "url": [
         "https://good-apps.jp/", 
         "https://good-apps.jp/media/column/23431"
-        // 必要に応じて他の主要記事URLも追加
       ],
       "settings": {
         "chromeFlags": "--no-sandbox --headless"
@@ -17,7 +15,6 @@
         "categories:accessibility": ["warn", { "minScore": 0.90 }],
         "categories:best-practices": ["warn", { "minScore": 0.80 }],
         
-        // 個別の指標（例えば LCP、CLS 等）で厳しめの基準を設定することも可能
         // "largest-contentful-paint": ["error", { "maxNumericValue": 2500 }], // ミリ秒表記
       }
     }
