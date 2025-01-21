@@ -3,7 +3,7 @@ name: Lighthouse CI
 on:
   # ① プルリクエストが作成/更新されたとき
   pull_request:
-    branches: [ "main" ]
+    branches: [ "ここにブランチを記入" ]
   # ② 毎日深夜1時に自動実行（cron形式：UTC基準）
   schedule:
     - cron: "0 16 * * *"  # UTCで16時 → JSTで1時
