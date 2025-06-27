@@ -21,38 +21,34 @@
 - F2/G2にはシート内のF列/G列の平均値も自動計算。
 - **トリガー:** 定期（午前1時～2時, fetchSiteData）
 
-### 4. update24hMetrics.gs
-- **KW管理表のB列「KW」・C列「URL」の組み合わせごとに、直近24時間の平均掲載順位をAG列に出力します。**
-- **トリガー:** なし（手動実行のみ）
-
-### 5. updateCategoryAverages.gs (onEdit)
+### 4. updateCategoryAverages.gs (onEdit)
 - **KW管理表のS列「投稿タイプ」で「category」行ごとに、直下のデータ行～次のcategory行直前までのD列「30日間の平均掲載順位」数値平均を、ブロック先頭のG列「記事全体平均順位」に出力します。**
 - D列またはS列編集時に自動再計算。
 - **トリガー:** onEdit, 定期（午前0時～1時, updateCategoryAverages）
 
-### 6. updateLastCrawlDates.gs
+### 5. updateLastCrawlDates.gs
 - **KW管理表のC列「URL」ごとに、Google Search Console Index APIを使い、AQ列「crawl」に前回クロール日時を出力します。**
 - タイムアウト・途中再開・自動トリガー再実行に対応。
 - **トリガー:** 定期（午前6時～7時, updateLastCrawlDatesFirst50）
 
-### 7. updateModifiedDatesByPostId.gs
+### 6. updateModifiedDatesByPostId.gs
 - **KW管理表のC列「URL」から WordPress 投稿IDを抽出し、REST API経由でAP列「modified」に最終更新日を反映します。**
 - **トリガー:** 定期（午前2時～3時, updateModifiedDatesByUrl）
 
-### 8. formatUrlColumn.gs
+### 7. formatUrlColumn.gs
 - **KW管理表のC列「URL」の書式（リッチテキスト/リンク/フォント等）を一括リセットします。**
 - バッチ処理・毎時自動トリガー対応。
 - **トリガー:** 定期（1時間おき, formatUrlColumnHour）
 
-### 9. var converted = newValue.replace.gs
+### 8. var converted = newValue.replace.gs
 - **KW管理表のB列「KW」またはC列「URL」（2行目以降）で、全角スペースを半角スペースに一括変換します。**
 - **トリガー:** 定期（1時間おき, removeFullWidthSpacesInColumnB）
 
-### 10. setStatusToCompletedForUrlRows.gs
+### 9. setStatusToCompletedForUrlRows.gs
 - **KW管理表のC列「URL」に値がある行のW列（骨格ステータス）、AD列（執筆ステータス）、AJ列（編集・校閲ステータス）を「完了」に一括更新します。**
 - **トリガー:** 手動実行、onEdit対応
 
-### 11. setCategoryTypeForCategoryUrls.gs
+### 10. setCategoryTypeForCategoryUrls.gs
 - **KW管理表のC列「URL」に「category」を含む行のS列「投稿タイプ」を「category」に一括設定します。**
 - **トリガー:** 手動実行
 
@@ -60,9 +56,10 @@
 
 ## トリガー設定のないGAS一覧
 
-- **update24hMetrics.gs**（手動実行のみ）
 - **setStatusToCompletedForUrlRows.gs**（手動実行・onEdit対応だが定期トリガーなし）
 - **setCategoryTypeForCategoryUrls.gs**（手動実行のみ）
+
+※ `update24hMetrics.gs` は削除済みです。
 
 ---
 
@@ -71,7 +68,6 @@
 - fetchSCAveragePositions.gs
 - fetchCategoryKWDailyPositions.gs
 - SiteMetrics.gs
-- update24hMetrics.gs
 - updateCategoryAverages.gs
 - updateLastCrawlDates.gs
 - updateModifiedDatesByPostId.gs
@@ -199,6 +195,10 @@
 - **API制限やシート負荷を避けるため、1時間ごとに分散実行**するのがベストです。
 - **API制限やシート負荷を避けるため、1時間ごとに分散実行**するのがベストです。
 - **書式リセット・スペース除去**は他バッチと重複しても問題ありません。
+- **API制限やシート負荷を避けるため、1時間ごとに分散実行**するのがベストです。
+- **API制限やシート負荷を避けるため、1時間ごとに分散実行**するのがベストです。
+- **API制限やシート負荷を避けるため、1時間ごとに分散実行**するのがベストです。
+- **API制限やシート負荷を避けるため、1時間ごとに分散実行**するのがベストです。
 - **API制限やシート負荷を避けるため、1時間ごとに分散実行**するのがベストです。
 - **API制限やシート負荷を避けるため、1時間ごとに分散実行**するのがベストです。
 - **API制限やシート負荷を避けるため、1時間ごとに分散実行**するのがベストです。
