@@ -44,29 +44,26 @@
 - バッチ処理・毎時自動トリガー対応。
 - **トリガー:** 定期（1時間おき, formatUrlColumnHour）
 
-### 9. getActiveSpreadsheet.gs (onEdit)
-- **KW管理表→「松浦 嵩」シートへの列幅コピーや、FILTER関数の自動挿入などを行います。**
-- **トリガー:** onEdit
-
-### 10. セルに「category」と入力されたときに、入力された行の直上に新しい行を作成.gs (onEdit)
+### 9. セルに「category」と入力されたときに、入力された行の直上に新しい行を作成.gs (onEdit)
 - **KW管理表のU列「骨格作成者」で「category」と入力された際、直上に新規行を挿入し、S列「投稿タイプ」のデータバリデーションと値をコピーします。**
 - **トリガー:** onEdit
 
-### 11. var converted = newValue.replace.gs
+### 10. var converted = newValue.replace.gs
 - **KW管理表のB列「KW」またはC列「URL」（2行目以降）で、全角スペースを半角スペースに一括変換します。**
 - **トリガー:** 定期（1時間おき, removeFullWidthSpacesInColumnB）
 
-### 12. setStatusToCompletedForUrlRows.gs
+### 11. setStatusToCompletedForUrlRows.gs
 - **KW管理表のC列「URL」に値がある行のW列（骨格ステータス）、AD列（執筆ステータス）、AJ列（編集・校閲ステータス）を「完了」に一括更新します。**
 - **トリガー:** 手動実行、onEdit対応
 
-### 13. setCategoryTypeForCategoryUrls.gs
+### 12. setCategoryTypeForCategoryUrls.gs
 - **KW管理表のC列「URL」に「category」を含む行のS列「投稿タイプ」を「category」に一括設定します。**
 - **トリガー:** 手動実行
 
 ---
 
 ## ファイル構成
+
 - fetchSCAveragePositions.gs
 - fetchCategoryKWDailyPositions.gs
 - SiteMetrics.gs
@@ -75,7 +72,6 @@
 - updateLastCrawlDates.gs
 - updateModifiedDatesByPostId.gs
 - formatUrlColumn.gs
-- getActiveSpreadsheet.gs
 - セルに「category」と入力されたときに、入力された行の直上に新しい行を作成.gs
 - var converted = newValue.replace.gs
 - setStatusToCompletedForUrlRows.gs
@@ -99,6 +95,7 @@
 ---
 
 ## 注意事項
+
 - 各スクリプトはシート名や列番号などを前提にしているため、運用時は該当シート構成・カラム構成に注意してください。
 - Search Console APIやWordPress REST APIの認証情報・権限設定が必要なものがあります。
 - バッチ処理系はGoogle Apps Scriptの実行時間制限（6分）に配慮し、途中再開や自動トリガー再実行に対応しています。
@@ -155,6 +152,7 @@
 ---
 
 ## 連絡先
+
 - スクリプトの仕様・運用に関する質問は管理者までご連絡ください。
 - **用途**: プロジェクト全体の設定管理。
 
@@ -193,5 +191,7 @@
 
 - **順位データ取得（batchFetchSCAveragePositions）→カテゴリ集計（fetchCategoryKWDailyPositions, fetchSiteData, updateCategoryAverages）→クロール・WP更新日系**の順がデータ整合性・運用効率の観点で最適です。
 - **書式リセット・スペース除去**は他バッチと重複しても問題ありません。
+- **API制限やシート負荷を避けるため、1時間ごとに分散実行**するのがベストです。
+- **API制限やシート負荷を避けるため、1時間ごとに分散実行**するのがベストです。
 - **API制限やシート負荷を避けるため、1時間ごとに分散実行**するのがベストです。
 - **API制限やシート負荷を避けるため、1時間ごとに分散実行**するのがベストです。
