@@ -23,7 +23,7 @@
 ### 4. update24hMetrics.gs
 - **KW管理表**のB列（query）・C列（page URL）ごとに、直近24時間の平均掲載順位をAG列に出力します。
 
-### 5. updateCategoryAverages.gs
+### 5. updateCategoryAverages.gs (onEdit)
 - **KW管理表**のS列「category」行ごとに、直下のデータ行～次のcategory行直前までのD列数値平均を、ブロック先頭のG列に出力します。
 - D列またはS列編集時に自動再計算。
 
@@ -38,10 +38,10 @@
 - **KW管理表**のC列（URL）の書式（リッチテキスト/リンク/フォント等）を一括リセットします。
 - バッチ処理・毎時自動トリガー対応。
 
-### 9. getActiveSpreadsheet.gs
+### 9. getActiveSpreadsheet.gs (onEdit)
 - **KW管理表**→「松浦 嵩」シートへの列幅コピーや、FILTER関数の自動挿入などを行います。
 
-### 10. セルに「category」と入力されたときに、入力された行の直上に新しい行を作成.gs
+### 10. セルに「category」と入力されたときに、入力された行の直上に新しい行を作成.gs (onEdit)
 - **KW管理表**のU列で「category」と入力された際、直上に新規行を挿入し、S列のデータバリデーションと値をコピーします。
 
 ### 11. var converted = newValue.replace.gs
