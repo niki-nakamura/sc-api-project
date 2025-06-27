@@ -149,3 +149,40 @@
 ## 連絡先
 - スクリプトの仕様・運用に関する質問は管理者までご連絡ください。
 - **用途**: プロジェクト全体の設定管理。
+
+---
+
+## トリガー設定の最適化について
+
+### 最適な実行順・時間帯の考え方
+
+- **依存関係があるものは順番を守る**（例：順位データ取得→集計→書式リセット）
+- **API制限や負荷分散を考慮し、深夜～早朝に分散実行**
+- **onEdit系は手動編集時のみ発火なので定期トリガー不要**
+- **書式リセットやスペース除去など軽い処理は他バッチと重複してもOK**
+
+---
+
+### 推奨トリガー順・時間帯
+
+| 実行順 | トリガー名                        | 実行時間帯         | 備考・理由                                  |
+|--------|-----------------------------------|--------------------|---------------------------------------------|
+| 1      | batchFetchSCAveragePositions      | 午前3時～4時       | 検索順位・クリック等の生データ取得（最初に） |
+| 2      | fetchCategoryKWDailyPositions     | 午前4時～5時       | カテゴリKWデイリー順位抽出                   |
+| 3      | fetchSiteData                     | 午前5時～6時       | サイト全体集計（カテゴリKWデータ依存）        |
+| 4      | updateCategoryAverages            | 午前6時～7時       | カテゴリ平均自動計算（順位データ依存）        |
+| 5      | updateLastCrawlDatesFirst50       | 午前7時～8時       | 前回クロール日時（順位データ後でOK）          |
+| 6      | updateModifiedDatesByUrl          | 午前8時～9時       | WordPress最終更新日取得                      |
+| 7      | formatUrlColumnHour               | 1時間おき          | URL列書式リセット（いつでもOK）              |
+| 8      | removeFullWidthSpacesInColumnB    | 1時間おき          | B列全角スペース除去（いつでもOK）            |
+
+- **onEdit系（updateCategoryAverages, getActiveSpreadsheet, セルに「category」と入力...）は定期トリガー不要**
+- **update24hMetrics.gs** は手動実行推奨（API負荷・用途限定のため）
+
+---
+
+### 補足
+
+- **順位データ取得（batchFetchSCAveragePositions）→カテゴリ集計（fetchCategoryKWDailyPositions, fetchSiteData, updateCategoryAverages）→クロール・WP更新日系**の順がデータ整合性・運用効率の観点で最適です。
+- **書式リセット・スペース除去**は他バッチと重複しても問題ありません。
+- **API制限やシート負荷を避けるため、1時間ごとに分散実行**するのがベストです。
