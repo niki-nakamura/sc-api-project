@@ -8,54 +8,53 @@
 ## スクリプト一覧と概要
 
 ### 1. fetchSCAveragePositions.gs
-- KW管理表のC列「URL」終端までを対象に、Search Console API からA列「KW」×B列「URL」ごとのC列「30日間の平均掲載順位」、D列「7日間」、E列「比較」、G列「クリック数」、H列「合計表示回数」、I列「平均CTR」などをバッチで取得し、該当列に反映します。
+- **KW管理表のB列「KW」・C列「URL」ごとに、D列「30日間の平均掲載順位」、E列「7日間」、F列「比較」、H列「クリック数」、I列「合計表示回数」、J列「平均CTR」などをSearch Console APIからバッチ取得し、該当列に反映します。**
 - LockServiceによる排他制御、動的バッチサイズ、途中再開・自動トリガー再実行に対応。
 - **トリガー:** 定期（午前3時～4時, batchFetchSCAveragePositions）
 
 ### 2. fetchCategoryKWDailyPositions.gs
-- カテゴリKWデイリー順位シート専用。
-- C列「KW」×E列「URL」ごとに、F列「30日間の平均掲載順位」、G列「7日間の平均掲載順位」、H列「比較」、I列「クリック数」、J列「合計表示回数」、K列「平均CTR」などを取得し、該当列に反映します。
+- **カテゴリKWデイリー順位シートのC列「KW」・E列「URL」ごとに、F列「30日間の平均掲載順位」、G列「7日間の平均掲載順位」、H列「比較」、I列「クリック数」、J列「合計表示回数」、K列「平均CTR」などを取得し、該当列に反映します。**
 - シート全体のI2セルに30日クリック合計も出力。
 - **トリガー:** 定期（午前0時～1時, fetchCategoryKWDailyPositions）
 
 ### 3. SiteMetrics.gs
-- カテゴリKWデイリー順位シートの2行目（サイト全体用）に、E列「URL」、F列「30日間の平均掲載順位」、G列「7日間の平均掲載順位」、H列「比較」、I列「クリック数」、J列「合計表示回数」、K列「平均CTR」などを集計して出力します。
+- **カテゴリKWデイリー順位シートの2行目（サイト全体用）に、E列「URL」、F列「30日間の平均掲載順位」、G列「7日間の平均掲載順位」、H列「比較」、I列「クリック数」、J列「合計表示回数」、K列「平均CTR」などを集計して出力します。**
 - F2/G2にはシート内のF列/G列の平均値も自動計算。
 - **トリガー:** 定期（午前1時～2時, fetchSiteData）
 
 ### 4. update24hMetrics.gs
-- KW管理表のA列「KW」・B列「URL」の組み合わせごとに、直近24時間の平均掲載順位をAG列「記事修正理由」へ出力します。
+- **KW管理表のB列「KW」・C列「URL」の組み合わせごとに、直近24時間の平均掲載順位をAG列に出力します。**
 - **トリガー:** 手動実行
 
 ### 5. updateCategoryAverages.gs (onEdit)
-- KW管理表のS列「投稿タイプ」「category」行ごとに、直下のデータ行～次のcategory行直前までのD列「7日間」数値平均を、ブロック先頭のG列「記事全体平均順位」に出力します。
-- D列「7日間」またはS列「投稿タイプ」編集時に自動再計算。
+- **KW管理表のS列「投稿タイプ」で「category」行ごとに、直下のデータ行～次のcategory行直前までのD列「30日間の平均掲載順位」数値平均を、ブロック先頭のG列「記事全体平均順位」に出力します。**
+- D列またはS列編集時に自動再計算。
 - **トリガー:** onEdit, 定期（午前0時～1時, updateCategoryAverages）
 
 ### 6. updateLastCrawlDates.gs
-- KW管理表のB列「URL」ごとに、Google Search Console Index APIを使い、AQ列「crawl」に前回クロール日時を出力します。
+- **KW管理表のC列「URL」ごとに、Google Search Console Index APIを使い、AQ列「crawl」に前回クロール日時を出力します。**
 - タイムアウト・途中再開・自動トリガー再実行に対応。
 - **トリガー:** 定期（午前6時～7時, updateLastCrawlDatesFirst50）
 
 ### 7. updateModifiedDatesByPostId.gs
-- KW管理表のB列「URL」から WordPress 投稿IDを抽出し、REST API経由でAO列「modified」に最終更新日を反映します。
+- **KW管理表のC列「URL」から WordPress 投稿IDを抽出し、REST API経由でAP列「modified」に最終更新日を反映します。**
 - **トリガー:** 定期（午前2時～3時, updateModifiedDatesByUrl）
 
 ### 8. formatUrlColumn.gs
-- KW管理表のB列「URL」の書式（リッチテキスト/リンク/フォント等）を一括リセットします。
+- **KW管理表のC列「URL」の書式（リッチテキスト/リンク/フォント等）を一括リセットします。**
 - バッチ処理・毎時自動トリガー対応。
 - **トリガー:** 定期（1時間おき, formatUrlColumnHour）
 
 ### 9. getActiveSpreadsheet.gs (onEdit)
-- KW管理表→「松浦 嵩」シートへの列幅コピーや、FILTER関数の自動挿入などを行います。
+- **KW管理表→「松浦 嵩」シートへの列幅コピーや、FILTER関数の自動挿入などを行います。**
 - **トリガー:** onEdit
 
 ### 10. セルに「category」と入力されたときに、入力された行の直上に新しい行を作成.gs (onEdit)
-- KW管理表のU列「骨格期限日」で「category」と入力された際、直上に新規行を挿入し、S列「投稿タイプ」のデータバリデーションと値をコピーします。
+- **KW管理表のU列「骨格作成者」で「category」と入力された際、直上に新規行を挿入し、S列「投稿タイプ」のデータバリデーションと値をコピーします。**
 - **トリガー:** onEdit
 
 ### 11. var converted = newValue.replace.gs
-- KW管理表のA列「KW」またはB列「URL」（2行目以降）で、全角スペースを半角スペースに一括変換します。
+- **KW管理表のB列「KW」またはC列「URL」（2行目以降）で、全角スペースを半角スペースに一括変換します。**
 - **トリガー:** 定期（1時間おき, removeFullWidthSpacesInColumnB）
 
 ---
@@ -185,4 +184,5 @@
 
 - **順位データ取得（batchFetchSCAveragePositions）→カテゴリ集計（fetchCategoryKWDailyPositions, fetchSiteData, updateCategoryAverages）→クロール・WP更新日系**の順がデータ整合性・運用効率の観点で最適です。
 - **書式リセット・スペース除去**は他バッチと重複しても問題ありません。
+- **API制限やシート負荷を避けるため、1時間ごとに分散実行**するのがベストです。
 - **API制限やシート負荷を避けるため、1時間ごとに分散実行**するのがベストです。
