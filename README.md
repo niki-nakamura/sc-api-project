@@ -1,7 +1,6 @@
 # sc-api-project Google Apps Script 一覧
 
-このプロジェクトは Google スプレッドシート「KW管理表」や「カテゴリKWデイリー順位」などを対象に、SEO・検索順位・WordPress・Search Console 連携などの自動化を行う Google Apps Script (GAS) 群を管理しています。  
-各スクリプトの役割・機能を以下にまとめます。
+このプロジェクトは Google スプレッドシート「KW管理表」や「カテゴリKWデイリー順位」などを対象に、SEO・検索順位・WordPress・Search Console 連携などの自動化を行う Google Apps Script (GAS) 群を管理しています。
 
 ---
 
@@ -57,6 +56,14 @@
 - **KW管理表のB列「KW」またはC列「URL」（2行目以降）で、全角スペースを半角スペースに一括変換します。**
 - **トリガー:** 定期（1時間おき, removeFullWidthSpacesInColumnB）
 
+### 12. setStatusToCompletedForUrlRows.gs
+- **KW管理表のC列「URL」に値がある行のW列（骨格ステータス）、AD列（執筆ステータス）、AJ列（編集・校閲ステータス）を「完了」に一括更新します。**
+- **トリガー:** 手動実行、onEdit対応
+
+### 13. setCategoryTypeForCategoryUrls.gs
+- **KW管理表のC列「URL」に「category」を含む行のS列「投稿タイプ」を「category」に一括設定します。**
+- **トリガー:** 手動実行
+
 ---
 
 ## ファイル構成
@@ -71,6 +78,8 @@
 - getActiveSpreadsheet.gs
 - セルに「category」と入力されたときに、入力された行の直上に新しい行を作成.gs
 - var converted = newValue.replace.gs
+- setStatusToCompletedForUrlRows.gs
+- setCategoryTypeForCategoryUrls.gs
 
 ---
 
