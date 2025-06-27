@@ -120,6 +120,21 @@
 
 ---
 
+## Scheduled Triggers（定期実行トリガー一覧）
+
+| トリガー名                        | 実行時間帯         | 実行頻度   | 備考                      |
+|-----------------------------------|--------------------|------------|---------------------------|
+| batchFetchSCAveragePositions      | 午前3時～4時       | 16.67%     | Search Console平均順位バッチ |
+| updateLastCrawlDatesFirst50       | 午前6時～7時       | 100%       | 前回クロール日時（最初の50件）|
+| formatUrlColumnHour               | 1時間おき          | 40.54%     | URL列書式リセット           |
+| updateCategoryAverages            | 午前0時～1時       | 25%        | カテゴリ平均自動計算         |
+| fetchCategoryKWDailyPositions     | 午前0時～1時       | 16.67%     | カテゴリKWデイリー順位抽出    |
+| fetchSiteData                     | 午前1時～2時       | 16.67%     | サイト全体データ抽出         |
+| updateModifiedDatesByUrl          | 午前2時～3時       | 16.67%     | WordPress最終更新日取得      |
+| removeFullWidthSpacesInColumnB    | 1時間おき          | 24.16%     | B列全角スペース除去          |
+
+---
+
 ## 連絡先
 - スクリプトの仕様・運用に関する質問は管理者までご連絡ください。
 - **用途**: プロジェクト全体の設定管理。
